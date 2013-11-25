@@ -11,6 +11,7 @@ BuildRequires:	autoconf >= 2.50
 BuildRequires:	protobuf-c-devel
 BuildRequires:	rpmbuild(macros) >= 1.228
 BuildRequires:	sed >= 4.0
+Requires:	iproute2 >= 3.6
 Requires:	uname(release) >= 3.9
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
