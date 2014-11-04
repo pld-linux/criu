@@ -1,7 +1,7 @@
 Summary:	checkpoint/restore functionality for Linux in userspace
 Name:		criu
 Version:	1.0
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Applications/System
 Source0:	http://download.openvz.org/criu/%{name}-%{version}.tar.bz2
