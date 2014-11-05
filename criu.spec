@@ -1,7 +1,7 @@
 Summary:	checkpoint/restore functionality for Linux in userspace
 Name:		criu
 Version:	1.3.1
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Applications/System
 Source0:	http://download.openvz.org/criu/%{name}-%{version}.tar.bz2
@@ -64,6 +64,7 @@ sed -i -e 's#-O2#$(OPT)#g' Makefile*
 
 %build
 %{__make} \
+	DEB_HOST_MULTIARCH= \
 	CC="%{__cc}" \
 	OPT="%{rpmcppflags} %{rpmcflags}" \
 	PREFIX=%{_prefix} \
@@ -75,6 +76,7 @@ sed -i -e 's#-O2#$(OPT)#g' Makefile*
 %install
 rm -rf $RPM_BUILD_ROOT
 %{__make} install \
+	DEB_HOST_MULTIARCH= \
 	PREFIX="%{_prefix}" \
 	LOGROTATEDIR=%{_sysconfdir}/logrotate.d \
 	SYSTEMDUNITDIR=%{systemdunitdir} \
