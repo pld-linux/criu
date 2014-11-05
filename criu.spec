@@ -16,6 +16,7 @@ Requires:	iproute2 >= 3.6
 Requires:	uname(release) >= 3.9
 Requires(post,preun,postun):	systemd-units >= 38
 Requires:	systemd-units >= 38
+ExclusiveArch:	%{x8664}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
