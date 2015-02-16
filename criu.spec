@@ -1,11 +1,11 @@
 Summary:	checkpoint/restore functionality for Linux in userspace
 Name:		criu
-Version:	1.3.1
-Release:	2
+Version:	1.4
+Release:	1
 License:	GPL v2
 Group:		Applications/System
 Source0:	http://download.openvz.org/criu/%{name}-%{version}.tar.bz2
-# Source0-md5:	72331377375c136abbfebcfa3f5d3f90
+# Source0-md5:	35c3904abcf297bd88b8f7bcd2a588d5
 URL:		http://criu.org/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	protobuf-c-devel
@@ -96,7 +96,7 @@ rm -rf $RPM_BUILD_ROOT
 %postun
 %systemd_reload
 
-%post libs -p /sbin/ldconfig
+%post   libs -p /sbin/ldconfig
 %postun libs -p /sbin/ldconfig
 
 %files
