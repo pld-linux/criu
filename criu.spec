@@ -1,4 +1,5 @@
-Summary:	checkpoint/restore functionality for Linux in userspace
+Summary:	Checkpoint/restore functionality for Linux in userspace
+Summary(pl.UTF-8):	Funkcja checkpoint/restore w przestrzeni użytkownika dla Linuksa
 Name:		criu
 Version:	1.4
 Release:	1
@@ -35,6 +36,15 @@ and checkpoint it to a hard drive as a collection of files. You can
 then use the files to restore and run the application from the point
 it was frozen at. The distinctive feature of the CRIU project is that
 it is mainly implemented in user space.
+
+%description -l pl.UTF-8
+CRIU (Checkpoint/Restore In Userspace) to narzędzie programowe dla
+systemu operacyjnego Linux. Przy jego użyciu można zamrozić działającą
+aplikację (lub jej część) i zapisać migawkę na twardym dysku jako
+zestaw plików. Następnie można użyć tych plików do odtworzenia i
+uruchomienia aplikacji od miejsca, w którym została zamrożona.
+Wyróżnikiem projektu CRIU jest to, że został zaimplementowany głównie
+w przestrzeni użytkownika.
 
 %package libs
 Summary:	CRIU shared library
