@@ -1,15 +1,17 @@
 Summary:	Checkpoint/restore functionality for Linux in userspace
 Summary(pl.UTF-8):	Funkcja checkpoint/restore w przestrzeni użytkownika dla Linuksa
 Name:		criu
-Version:	1.4
+Version:	1.5.1
 Release:	1
-License:	GPL v2
+License:	GPL v2 (tools), LGPL v2.1 (library)
 Group:		Applications/System
 Source0:	http://download.openvz.org/criu/%{name}-%{version}.tar.bz2
-# Source0-md5:	35c3904abcf297bd88b8f7bcd2a588d5
+# Source0-md5:	b63a42e9b1195eea8c68b80aa3ff0fc0
+Patch0:		%{name}-python.patch
 URL:		http://criu.org/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	protobuf-c-devel
+BuildRequires:	python >= 2
 BuildRequires:	rpmbuild(macros) >= 1.228
 BuildRequires:	sed >= 4.0
 Requires:	%{name}-libs = %{version}-%{release}
@@ -49,6 +51,7 @@ w przestrzeni użytkownika.
 %package libs
 Summary:	CRIU shared library
 Summary(pl.UTF-8):	Biblioteka współdzielona CRIU
+License:	LGPL v2.1
 Group:		Libraries
 
 %description libs
@@ -58,19 +61,34 @@ CRIU shared library.
 Biblioteka współdzielona CRIU.
 
 %package devel
-Summary:	Header file for CRIU library
-Summary(pl.UTF-8):	Plik nagłówkowy biblioteki CRIU
+Summary:	Header files for CRIU library
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki CRIU
+License:	LGPL v2.1
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
 
 %description devel
-Header file for CRIU library.
+Header files for CRIU library.
 
 %description devel -l pl.UTF-8
-Plik nagłówkowy biblioteki CRIU.
+Pliki nagłówkowe biblioteki CRIU.
+
+%package -n python-pycriu
+Summary:	Python interface to CRIU
+Summary(pl.UTF-8):	Pythonowy interfejs do CRIU
+Group:		Libraries/Python
+Requires:	%{name}-libs = %{version}-%{release}
+
+%description -n python-pycriu
+Python interface to CRIU. This package contains also crit utility.
+
+%description -n python-pycriu -l pl.UTF-8
+Pythonowy interfejs do CRIU. Ten pakiet zawiera także narzędzie crit.
 
 %prep
 %setup -q
+%patch0 -p1
+
 sed -i -e 's#-O2#$(OPT)#g' Makefile*
 
 %build
@@ -93,6 +111,8 @@ rm -rf $RPM_BUILD_ROOT
 	SYSTEMDUNITDIR=%{systemdunitdir} \
 	MANDIR=%{_mandir} \
 	DESTDIR=$RPM_BUILD_ROOT
+
+%py_postclean
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -128,3 +148,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libcriu.so
 %{_includedir}/criu
 %{_pkgconfigdir}/criu.pc
+
+%files -n python-pycriu
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/crit
+%{py_sitescriptdir}/pycriu
+%{py_sitescriptdir}/crit-0.0.1-py*.egg-info

@@ -1,0 +1,11 @@
+--- criu-1.5.1/Makefile.orig	2015-04-05 17:59:01.846070466 +0200
++++ criu-1.5.1/Makefile	2015-04-05 18:08:00.123965069 +0200
+@@ -289,7 +289,7 @@
+ 
+ install-crit: crit
+ 	$(E) "  INSTALL crit"
+-	$(Q) python scripts/crit-setup.py install --prefix=$(DESTDIR)
++	$(Q) python scripts/crit-setup.py install --root=$(DESTDIR) --optimize=2
+ 
+ .PHONY: install install-man install-crit
+ 
