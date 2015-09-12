@@ -1,12 +1,12 @@
 Summary:	Checkpoint/restore functionality for Linux in userspace
 Summary(pl.UTF-8):	Funkcja checkpoint/restore w przestrzeni użytkownika dla Linuksa
 Name:		criu
-Version:	1.5.1
+Version:	1.7
 Release:	1
 License:	GPL v2 (tools), LGPL v2.1 (library)
 Group:		Applications/System
 Source0:	http://download.openvz.org/criu/%{name}-%{version}.tar.bz2
-# Source0-md5:	b63a42e9b1195eea8c68b80aa3ff0fc0
+# Source0-md5:	317a2c303f445824c640d5665a40d778
 Patch0:		%{name}-python.patch
 URL:		http://criu.org/
 BuildRequires:	autoconf >= 2.50
@@ -14,10 +14,10 @@ BuildRequires:	protobuf-c-devel
 BuildRequires:	python >= 2
 BuildRequires:	rpmbuild(macros) >= 1.228
 BuildRequires:	sed >= 4.0
+Requires(post,preun,postun):	systemd-units >= 38
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	iproute2 >= 3.6
 Requires:	uname(release) >= 3.9
-Requires(post,preun,postun):	systemd-units >= 38
 Requires:	systemd-units >= 38
 ExclusiveArch:	%{x8664}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -131,7 +131,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc CREDITS README
+%doc CREDITS README.md
 %attr(755,root,root) %{_sbindir}/criu
 %{_mandir}/man8/criu.8*
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/criu-service
