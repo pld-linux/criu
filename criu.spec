@@ -2,7 +2,7 @@ Summary:	Checkpoint/restore functionality for Linux in userspace
 Summary(pl.UTF-8):	Funkcja checkpoint/restore w przestrzeni użytkownika dla Linuksa
 Name:		criu
 Version:	1.7
-Release:	1
+Release:	2
 License:	GPL v2 (tools), LGPL v2.1 (library)
 Group:		Applications/System
 Source0:	http://download.openvz.org/criu/%{name}-%{version}.tar.bz2
