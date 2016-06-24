@@ -1,25 +1,24 @@
 Summary:	Checkpoint/restore functionality for Linux in userspace
 Summary(pl.UTF-8):	Funkcja checkpoint/restore w przestrzeni użytkownika dla Linuksa
 Name:		criu
-Version:	1.7
-Release:	3
+Version:	2.3
+Release:	1
 License:	GPL v2 (tools), LGPL v2.1 (library)
 Group:		Applications/System
 Source0:	http://download.openvz.org/criu/%{name}-%{version}.tar.bz2
-# Source0-md5:	317a2c303f445824c640d5665a40d778
+# Source0-md5:	ba8f3ba9aed1219f0569cc2958a4f171
 Patch0:		%{name}-python.patch
 URL:		http://criu.org/
 BuildRequires:	autoconf >= 2.50
+BuildRequires:	libnl-devel >= 3.2
 BuildRequires:	protobuf-c-devel
 BuildRequires:	python >= 2
 BuildRequires:	rpmbuild(macros) >= 1.228
 BuildRequires:	sed >= 4.0
-Requires(post,preun,postun):	systemd-units >= 38
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	iproute2 >= 3.6
 Requires:	uname(release) >= 3.9
-Requires:	systemd-units >= 38
-ExclusiveArch:	%{x8664}
+ExclusiveArch:	%{x8664} arm aarch64 ppc64
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -89,7 +88,7 @@ Pythonowy interfejs do CRIU. Ten pakiet zawiera także narzędzie crit.
 %setup -q
 %patch0 -p1
 
-sed -i -e 's#-O2#$(OPT)#g' Makefile*
+%{__sed} -i -e 's#-O2 -g#$(OPT)#g' Makefile
 
 %build
 %{__make} \
@@ -97,8 +96,8 @@ sed -i -e 's#-O2#$(OPT)#g' Makefile*
 	CC="%{__cc}" \
 	OPT="%{rpmcppflags} %{rpmcflags}" \
 	PREFIX=%{_prefix} \
+	LIBDIR=%{_libdir} \
 	LOGROTATEDIR=%{_sysconfdir}/logrotate.d \
-	SYSTEMDUNITDIR=%{systemdunitdir} \
 	V=1 \
 	WERROR=0
 
@@ -106,9 +105,10 @@ sed -i -e 's#-O2#$(OPT)#g' Makefile*
 rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DEB_HOST_MULTIARCH= \
-	PREFIX="%{_prefix}" \
+	PREFIX=%{_prefix} \
+	LIBDIR=%{_libdir} \
+	PYSITESCRIPTDIR=%{py_sitescriptdir} \
 	LOGROTATEDIR=%{_sysconfdir}/logrotate.d \
-	SYSTEMDUNITDIR=%{systemdunitdir} \
 	MANDIR=%{_mandir} \
 	DESTDIR=$RPM_BUILD_ROOT
 
@@ -116,15 +116,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
-
-%post
-%systemd_post criu.service
-
-%preun
-%systemd_preun criu.service
-
-%postun
-%systemd_reload
 
 %post   libs -p /sbin/ldconfig
 %postun libs -p /sbin/ldconfig
@@ -134,9 +125,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc CREDITS README.md
 %attr(755,root,root) %{_sbindir}/criu
 %{_mandir}/man8/criu.8*
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/criu-service
-%{systemdunitdir}/criu.service
-%{systemdunitdir}/criu.socket
 
 %files libs
 %defattr(644,root,root,755)
