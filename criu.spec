@@ -1,5 +1,3 @@
-# TODO
-# - unpackaged: /usr/libexec/criu/scripts/systemd-autofs-restart.sh
 Summary:	Checkpoint/restore functionality for Linux in userspace
 Summary(pl.UTF-8):	Funkcja checkpoint/restore w przestrzeni użytkownika dla Linuksa
 Name:		criu
@@ -28,6 +26,8 @@ Requires:	iproute2 >= 3.5
 Requires:	uname(release) >= 3.11
 ExclusiveArch:	%{x8664} %{arm} aarch64 ppc64
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		_libexecdir	%{_prefix}/lib
 
 %description
 Checkpoint/Restore In Userspace, or CRIU, is a software tool for Linux
@@ -106,6 +106,7 @@ Pythonowy interfejs do CRIU. Ten pakiet zawiera także narzędzie crit.
 	PREFIX=%{_prefix} \\\
 	LIBDIR=%{_libdir} \\\
 	LOGROTATEDIR=%{_sysconfdir}/logrotate.d \\\
+	LIBEXECDIR=%{_libexecdir} \\\
 	PYSITESCRIPTDIR=%{py_sitescriptdir} \\\
 	MANDIR=%{_mandir} \\\
 	WERROR=0 \\\
@@ -116,6 +117,9 @@ Pythonowy interfejs do CRIU. Ten pakiet zawiera także narzędzie crit.
 rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+# optional script, do not autogenerate bash dep
+chmod -x $RPM_BUILD_ROOT%{_libexecdir}/%{name}/scripts/systemd-autofs-restart.sh
 
 %py_postclean
 
@@ -130,6 +134,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc CREDITS README.md contrib
 %attr(755,root,root) %{_sbindir}/criu
 %{_mandir}/man8/criu.8*
+%dir %{_libexecdir}/%{name}
+%dir %{_libexecdir}/%{name}/scripts
+%{_libexecdir}/%{name}/scripts/systemd-autofs-restart.sh
 
 %files libs
 %defattr(644,root,root,755)
