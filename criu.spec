@@ -26,7 +26,7 @@ BuildRequires:	sed >= 4.0
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	iproute2 >= 3.5
 Requires:	uname(release) >= 3.11
-ExclusiveArch:	%{x8664} arm aarch64 ppc64
+ExclusiveArch:	%{x8664} %{arm} aarch64 ppc64
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
