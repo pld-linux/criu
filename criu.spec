@@ -1,13 +1,16 @@
+# TODO
+# - unpackaged: /usr/libexec/criu/scripts/systemd-autofs-restart.sh
 Summary:	Checkpoint/restore functionality for Linux in userspace
 Summary(pl.UTF-8):	Funkcja checkpoint/restore w przestrzeni użytkownika dla Linuksa
 Name:		criu
-Version:	2.3
+Version:	2.4
 Release:	1
 License:	GPL v2 (tools), LGPL v2.1 (library)
 Group:		Applications/System
 Source0:	http://download.openvz.org/criu/%{name}-%{version}.tar.bz2
-# Source0-md5:	ba8f3ba9aed1219f0569cc2958a4f171
+# Source0-md5:	2f3a158d9bf74529c9dad53a67514de7
 Patch0:		%{name}-python.patch
+Patch1:		cc-quote.patch
 URL:		http://criu.org/
 BuildRequires:	asciidoc
 BuildRequires:	libcap-devel
@@ -93,6 +96,7 @@ Pythonowy interfejs do CRIU. Ten pakiet zawiera także narzędzie crit.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %{__sed} -i -e 's#-O2 -g#$(OPT)#g' Makefile
 
