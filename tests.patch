@@ -1,0 +1,13 @@
+--- criu-2.5/test/zdtm/static/Makefile~	2016-08-21 11:41:39.000000000 +0300
++++ criu-2.5/test/zdtm/static/Makefile	2016-08-21 11:41:42.142986535 +0300
+@@ -402,6 +402,10 @@
+ stopped02:	override CFLAGS += -DZDTM_STOPPED_TKILL
+ stopped12:	override CFLAGS += -DZDTM_STOPPED_KILL -DZDTM_STOPPED_TKILL
+ 
++# grantpt, etc troubles
++tty%:	override CFLAGS += -Wno-error=implicit-function-declaration -Wno-error=int-conversion
++pty%:	override CFLAGS += -Wno-error=implicit-function-declaration -Wno-error=int-conversion
++
+ $(LIB):	force
+ 	$(Q) $(MAKE) -C $(LIBDIR)
+ 

@@ -1,3 +1,7 @@
+#
+# Conditional build:
+%bcond_with	tests		# build and run tests (requires root)
+
 Summary:	Checkpoint/restore functionality for Linux in userspace
 Summary(pl.UTF-8):	Funkcja checkpoint/restore w przestrzeni użytkownika dla Linuksa
 Name:		criu
@@ -8,6 +12,7 @@ Group:		Applications/System
 Source0:	http://download.openvz.org/criu/%{name}-%{version}.tar.bz2
 # Source0-md5:	5d5115454d110adb744e885d82d2c1f6
 Patch0:		%{name}-python.patch
+Patch1:		tests.patch
 URL:		http://criu.org/
 BuildRequires:	asciidoc
 BuildRequires:	libcap-devel
@@ -95,6 +100,7 @@ Pythonowy interfejs do CRIU. Ten pakiet zawiera także narzędzie crit.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %{__sed} -i -e 's#-O2 -g#$(OPT)#g' Makefile
 
@@ -112,6 +118,10 @@ Pythonowy interfejs do CRIU. Ten pakiet zawiera także narzędzie crit.
 	WERROR=0 \\\
 	V=1
 %{__make}
+
+%if %{with tests}
+%{__make} test
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
