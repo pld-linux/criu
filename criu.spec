@@ -127,7 +127,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc CREDITS README.md
+%doc CREDITS README.md contrib
 %attr(755,root,root) %{_sbindir}/criu
 %{_mandir}/man8/criu.8*
 
