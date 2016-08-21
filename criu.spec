@@ -15,13 +15,13 @@ BuildRequires:	asciidoc
 BuildRequires:	libcap-devel
 BuildRequires:	libnl-devel >= 1:3.2
 BuildRequires:	pkgconfig
-BuildRequires:	protobuf-c-devel
 BuildRequires:	protobuf
+BuildRequires:	protobuf-c-devel
 BuildRequires:	protobuf-devel
 BuildRequires:	python >= 2
 BuildRequires:	python-modules
 BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.228
+BuildRequires:	rpmbuild(macros) >= 1.697
 BuildRequires:	sed >= 4.0
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	iproute2 >= 3.5
@@ -99,25 +99,22 @@ Pythonowy interfejs do CRIU. Ten pakiet zawiera także narzędzie crit.
 %{__sed} -i -e 's#-O2 -g#$(OPT)#g' Makefile
 
 %build
-%{__make} \
-	DEB_HOST_MULTIARCH= \
-	CC="%{__cc}" \
-	OPT="%{rpmcppflags} %{rpmcflags}" \
-	PREFIX=%{_prefix} \
-	LIBDIR=%{_libdir} \
-	LOGROTATEDIR=%{_sysconfdir}/logrotate.d \
-	V=1 \
-	WERROR=0
+%define _make_opts \\\
+	DEB_HOST_MULTIARCH= \\\
+	CC="%{__cc}" \\\
+	OPT="%{rpmcppflags} %{rpmcflags}" \\\
+	PREFIX=%{_prefix} \\\
+	LIBDIR=%{_libdir} \\\
+	LOGROTATEDIR=%{_sysconfdir}/logrotate.d \\\
+	PYSITESCRIPTDIR=%{py_sitescriptdir} \\\
+	MANDIR=%{_mandir} \\\
+	WERROR=0 \\\
+	V=1
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 %{__make} install \
-	DEB_HOST_MULTIARCH= \
-	PREFIX=%{_prefix} \
-	LIBDIR=%{_libdir} \
-	PYSITESCRIPTDIR=%{py_sitescriptdir} \
-	LOGROTATEDIR=%{_sysconfdir}/logrotate.d \
-	MANDIR=%{_mandir} \
 	DESTDIR=$RPM_BUILD_ROOT
 
 %py_postclean
