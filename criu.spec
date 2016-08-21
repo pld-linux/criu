@@ -118,8 +118,10 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-# optional script, do not autogenerate bash dep
-chmod -x $RPM_BUILD_ROOT%{_libexecdir}/%{name}/scripts/systemd-autofs-restart.sh
+install -p contrib/docker_cr.sh $RPM_BUILD_ROOT%{_libexecdir}/%{name}/scripts
+
+# optional scripts, do not autogenerate bash dep
+chmod -x $RPM_BUILD_ROOT%{_libexecdir}/%{name}/scripts/*.sh
 
 %py_postclean
 
@@ -131,12 +133,13 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc CREDITS README.md contrib
+%doc CREDITS README.md
 %attr(755,root,root) %{_sbindir}/criu
 %{_mandir}/man8/criu.8*
 %dir %{_libexecdir}/%{name}
 %dir %{_libexecdir}/%{name}/scripts
-%{_libexecdir}/%{name}/scripts/systemd-autofs-restart.sh
+%attr(755,root,root) %{_libexecdir}/%{name}/scripts/systemd-autofs-restart.sh
+%attr(755,root,root) %{_libexecdir}/%{name}/scripts/docker_cr.sh
 
 %files libs
 %defattr(644,root,root,755)
