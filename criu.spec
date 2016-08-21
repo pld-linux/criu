@@ -3,14 +3,13 @@
 Summary:	Checkpoint/restore functionality for Linux in userspace
 Summary(pl.UTF-8):	Funkcja checkpoint/restore w przestrzeni użytkownika dla Linuksa
 Name:		criu
-Version:	2.4
+Version:	2.5
 Release:	1
 License:	GPL v2 (tools), LGPL v2.1 (library)
 Group:		Applications/System
 Source0:	http://download.openvz.org/criu/%{name}-%{version}.tar.bz2
-# Source0-md5:	2f3a158d9bf74529c9dad53a67514de7
+# Source0-md5:	5d5115454d110adb744e885d82d2c1f6
 Patch0:		%{name}-python.patch
-Patch1:		cc-quote.patch
 URL:		http://criu.org/
 BuildRequires:	asciidoc
 BuildRequires:	libcap-devel
@@ -25,8 +24,8 @@ BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.228
 BuildRequires:	sed >= 4.0
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	iproute2 >= 3.6
-Requires:	uname(release) >= 3.9
+Requires:	iproute2 >= 3.5
+Requires:	uname(release) >= 3.11
 ExclusiveArch:	%{x8664} arm aarch64 ppc64
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -96,7 +95,6 @@ Pythonowy interfejs do CRIU. Ten pakiet zawiera także narzędzie crit.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
 
 %{__sed} -i -e 's#-O2 -g#$(OPT)#g' Makefile
 
