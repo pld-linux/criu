@@ -9,10 +9,16 @@ Source0:	http://download.openvz.org/criu/%{name}-%{version}.tar.bz2
 # Source0-md5:	ba8f3ba9aed1219f0569cc2958a4f171
 Patch0:		%{name}-python.patch
 URL:		http://criu.org/
-BuildRequires:	autoconf >= 2.50
-BuildRequires:	libnl-devel >= 3.2
+BuildRequires:	asciidoc
+BuildRequires:	libcap-devel
+BuildRequires:	libnl-devel >= 1:3.2
+BuildRequires:	pkgconfig
 BuildRequires:	protobuf-c-devel
+BuildRequires:	protobuf
+BuildRequires:	protobuf-devel
 BuildRequires:	python >= 2
+BuildRequires:	python-modules
+BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.228
 BuildRequires:	sed >= 4.0
 Requires:	%{name}-libs = %{version}-%{release}
