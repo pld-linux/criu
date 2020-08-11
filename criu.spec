@@ -1,3 +1,10 @@
+# TODO
+# - package static libs
+# 	/usr/lib/compel/fds.lib.a
+#	/usr/lib/compel/scripts/compel-pack.lds.S
+#	/usr/lib/compel/std.lib.a
+#	/usr/lib64/libcompel.a
+#	/usr/lib64/libcriu.a
 #
 # Conditional build:
 %bcond_with	tests		# build and run tests (requires root)
@@ -5,17 +12,18 @@
 Summary:	Checkpoint/restore functionality for Linux in userspace
 Summary(pl.UTF-8):	Funkcja checkpoint/restore w przestrzeni użytkownika dla Linuksa
 Name:		criu
-Version:	2.5
+Version:	3.14
 Release:	1
 License:	GPL v2 (tools), LGPL v2.1 (library)
 Group:		Applications/System
 Source0:	http://download.openvz.org/criu/%{name}-%{version}.tar.bz2
-# Source0-md5:	5d5115454d110adb744e885d82d2c1f6
+# Source0-md5:	73398c3db4b3535393b04546a4cc5bc9
 Patch0:		%{name}-python.patch
 Patch1:		tests.patch
 URL:		http://criu.org/
 BuildRequires:	asciidoc
 BuildRequires:	libcap-devel
+BuildRequires:	libnet-devel
 BuildRequires:	libnl-devel >= 1:3.2
 BuildRequires:	pkgconfig
 BuildRequires:	protobuf
@@ -144,7 +152,10 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc CREDITS README.md
+%attr(755,root,root) %{_bindir}/compel
 %attr(755,root,root) %{_sbindir}/criu
+%{_mandir}/man1/compel.1*
+%{_mandir}/man1/crit.1*
 %{_mandir}/man8/criu.8*
 %dir %{_libexecdir}/%{name}
 %dir %{_libexecdir}/%{name}/scripts
@@ -153,12 +164,16 @@ rm -rf $RPM_BUILD_ROOT
 
 %files libs
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libcompel.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libcompel.so.1
 %attr(755,root,root) %{_libdir}/libcriu.so.*.*
-%attr(755,root,root) %ghost %{_libdir}/libcriu.so.1
+%attr(755,root,root) %ghost %{_libdir}/libcriu.so.2
 
 %files devel
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libcompel.so
 %attr(755,root,root) %{_libdir}/libcriu.so
+%{_includedir}/compel
 %{_includedir}/criu
 %{_pkgconfigdir}/criu.pc
 
