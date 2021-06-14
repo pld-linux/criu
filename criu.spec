@@ -124,6 +124,7 @@ Pythonowy interfejs do CRIU. Ten pakiet zawiera także narzędzie crit.
 	PYSITESCRIPTDIR=%{py_sitescriptdir} \\\
 	MANDIR=%{_mandir} \\\
 	WERROR=0 \\\
+	SUBARCH=%{_target_cpu} \\\
 	V=1
 %{__make}
 
