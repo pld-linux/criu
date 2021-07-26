@@ -32,12 +32,12 @@ BuildRequires:	protobuf-devel
 BuildRequires:	python >= 2
 BuildRequires:	python-modules
 BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.697
+BuildRequires:	rpmbuild(macros) >= 2.007
 BuildRequires:	sed >= 4.0
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	iproute2 >= 3.5
 Requires:	uname(release) >= 3.11
-ExclusiveArch:	%{x8664} armv7l armv7hl armv7hnl aarch64 ppc64
+ExclusiveArch:	%{x8664} %{armv7} %{armv8} aarch64 ppc64
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_libexecdir	%{_prefix}/lib
