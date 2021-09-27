@@ -12,25 +12,30 @@
 Summary:	Checkpoint/restore functionality for Linux in userspace
 Summary(pl.UTF-8):	Funkcja checkpoint/restore w przestrzeni użytkownika dla Linuksa
 Name:		criu
-Version:	3.15
+Version:	3.16
 Release:	1
 License:	GPL v2 (tools), LGPL v2.1 (library)
 Group:		Applications/System
 Source0:	http://download.openvz.org/criu/%{name}-%{version}.tar.bz2
-# Source0-md5:	eb47303cda4b1fca8504333df0529a0d
+# Source0-md5:	f355b7eb8f4037d6b87b201815df7d7a
 Patch0:		%{name}-python.patch
 Patch1:		tests.patch
 URL:		http://criu.org/
 BuildRequires:	asciidoc
+BuildRequires:	gnutls-devel
+BuildRequires:	libbpf-devel
+BuildRequires:	libbsd-devel
 BuildRequires:	libcap-devel
 BuildRequires:	libnet-devel
 BuildRequires:	libnl-devel >= 1:3.2
+BuildRequires:	libselinux-devel
+BuildRequires:	nftables-devel
 BuildRequires:	pkgconfig
 BuildRequires:	protobuf
 BuildRequires:	protobuf-c-devel
 BuildRequires:	protobuf-devel
-BuildRequires:	python >= 2
-BuildRequires:	python-modules
+BuildRequires:	python3
+BuildRequires:	python3-modules
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 2.007
 BuildRequires:	sed >= 4.0
@@ -93,16 +98,17 @@ Header files for CRIU library.
 %description devel -l pl.UTF-8
 Pliki nagłówkowe biblioteki CRIU.
 
-%package -n python-pycriu
+%package -n python3-pycriu
 Summary:	Python interface to CRIU
 Summary(pl.UTF-8):	Pythonowy interfejs do CRIU
 Group:		Libraries/Python
 Requires:	%{name}-libs = %{version}-%{release}
+Obsoletes:	python-pycriu < 3.16
 
-%description -n python-pycriu
+%description -n python3-pycriu
 Python interface to CRIU. This package contains also crit utility.
 
-%description -n python-pycriu -l pl.UTF-8
+%description -n python3-pycriu -l pl.UTF-8
 Pythonowy interfejs do CRIU. Ten pakiet zawiera także narzędzie crit.
 
 %prep
@@ -111,6 +117,8 @@ Pythonowy interfejs do CRIU. Ten pakiet zawiera także narzędzie crit.
 %patch1 -p1
 
 %{__sed} -i -e 's#-O2 -g#$(OPT)#g' Makefile
+
+%{__sed} -i -e '1 s,#!.*env python.*,#!%{__python3},' scripts/criu-ns
 
 %build
 %define _make_opts \\\
@@ -121,7 +129,7 @@ Pythonowy interfejs do CRIU. Ten pakiet zawiera także narzędzie crit.
 	LIBDIR=%{_libdir} \\\
 	LOGROTATEDIR=%{_sysconfdir}/logrotate.d \\\
 	LIBEXECDIR=%{_libexecdir} \\\
-	PYSITESCRIPTDIR=%{py_sitescriptdir} \\\
+	PYSITESCRIPTDIR=%{py3_sitescriptdir} \\\
 	MANDIR=%{_mandir} \\\
 	WERROR=0 \\\
 	SUBARCH=%{_target_cpu} \\\
@@ -142,8 +150,6 @@ install -p contrib/docker_cr.sh $RPM_BUILD_ROOT%{_libexecdir}/%{name}/scripts
 # optional scripts, do not autogenerate bash dep
 chmod -x $RPM_BUILD_ROOT%{_libexecdir}/%{name}/scripts/*.sh
 
-%py_postclean
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -155,8 +161,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc CREDITS README.md
 %attr(755,root,root) %{_bindir}/compel
 %attr(755,root,root) %{_sbindir}/criu
+%attr(755,root,root) %{_sbindir}/criu-ns
 %{_mandir}/man1/compel.1*
 %{_mandir}/man1/crit.1*
+%{_mandir}/man1/criu-ns.1*
 %{_mandir}/man8/criu.8*
 %dir %{_libexecdir}/%{name}
 %dir %{_libexecdir}/%{name}/scripts
@@ -178,8 +186,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/criu
 %{_pkgconfigdir}/criu.pc
 
-%files -n python-pycriu
+%files -n python3-pycriu
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/crit
-%{py_sitescriptdir}/pycriu
-%{py_sitescriptdir}/crit-0.0.1-py*.egg-info
+%{py3_sitescriptdir}/pycriu
+%{py3_sitescriptdir}/crit-0.0.1-py*.egg-info
