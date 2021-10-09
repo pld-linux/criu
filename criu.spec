@@ -91,6 +91,7 @@ Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki CRIU
 License:	LGPL v2.1
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
+Requires:	protobuf-c-devel
 
 %description devel
 Header files for CRIU library.
