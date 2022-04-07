@@ -1,6 +1,6 @@
 # TODO
 # - package static libs
-# 	/usr/lib/compel/fds.lib.a
+#	/usr/lib/compel/fds.lib.a
 #	/usr/lib/compel/scripts/compel-pack.lds.S
 #	/usr/lib/compel/std.lib.a
 #	/usr/lib64/libcompel.a
@@ -13,7 +13,7 @@ Summary:	Checkpoint/restore functionality for Linux in userspace
 Summary(pl.UTF-8):	Funkcja checkpoint/restore w przestrzeni użytkownika dla Linuksa
 Name:		criu
 Version:	3.16
-Release:	4
+Release:	5
 License:	GPL v2 (tools), LGPL v2.1 (library)
 Group:		Applications/System
 Source0:	http://download.openvz.org/criu/%{name}-%{version}.tar.bz2
@@ -42,7 +42,7 @@ BuildRequires:	sed >= 4.0
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	iproute2 >= 3.5
 Requires:	uname(release) >= 3.11
-ExclusiveArch:	%{x8664} %{armv7} %{armv8} aarch64 ppc64
+ExclusiveArch:	%{x8664} %{armv7} %{armv8} aarch64 ppc64 x32
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_libexecdir	%{_prefix}/lib
