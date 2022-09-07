@@ -121,6 +121,8 @@ Pythonowy interfejs do CRIU. Ten pakiet zawiera także narzędzie crit.
 
 %{__sed} -i -e '1 s,#!.*env python.*,#!%{__python3},' scripts/criu-ns
 
+%{__ln_s} scripts/crit-setup.py setup.py
+
 %build
 %define _make_opts \\\
 	DEB_HOST_MULTIARCH= \\\
@@ -130,12 +132,13 @@ Pythonowy interfejs do CRIU. Ten pakiet zawiera także narzędzie crit.
 	LIBDIR=%{_libdir} \\\
 	LOGROTATEDIR=%{_sysconfdir}/logrotate.d \\\
 	LIBEXECDIR=%{_libexecdir} \\\
-	PYSITESCRIPTDIR=%{py3_sitescriptdir} \\\
 	MANDIR=%{_mandir} \\\
 	WERROR=0 \\\
 	SUBARCH=%{_target_cpu} \\\
 	V=1
 %{__make}
+
+%py3_build
 
 %if %{with tests}
 %{__make} test
@@ -145,6 +148,8 @@ Pythonowy interfejs do CRIU. Ten pakiet zawiera także narzędzie crit.
 rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+%py3_install
 
 install -p contrib/docker_cr.sh $RPM_BUILD_ROOT%{_libexecdir}/%{name}/scripts
 
